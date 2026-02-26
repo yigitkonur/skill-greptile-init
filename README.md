@@ -1,14 +1,20 @@
 # skill-greptile-init
 
-A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill that generates production-ready [Greptile](https://greptile.com) AI code review configuration for any repository.
+Generate production-ready [Greptile](https://greptile.com) AI code review configuration for any repository.
 
-> **Companion skill:** [skill-devin-review-init](https://github.com/yigitkonur/skill-devin-review-init) — generates `REVIEW.md` and `AGENTS.md` for Devin Review's AI code review system. Use both on the same repo for dual coverage.
+```bash
+npx skills add yigitkonur/skill-greptile-init
+```
+
+> Works with Claude Code, Cursor, Codex, Copilot, Windsurf, and [30+ other agents](https://skills.sh).
+
+> **Companion skill:** [skill-devin-review-init](https://github.com/yigitkonur/skill-devin-review-init) — generates `REVIEW.md` for Devin Review. Use both on the same repo for dual coverage.
+
+---
 
 Point it at a repo, and it analyzes the structure, tech stack, documentation, and conventions — then produces tailored `.greptile/` configuration files with rules that catch real bugs, not noise.
 
 ## What It Does
-
-Instead of writing generic boilerplate, this skill:
 
 1. **Explores your repo** — maps the directory structure, identifies frameworks, finds existing docs and schemas
 2. **Decides the config strategy** — single config vs. cascading monorepo overrides, strictness levels per directory
@@ -17,8 +23,6 @@ Instead of writing generic boilerplate, this skill:
 5. **Validates everything** — checks all JSON syntax, scope arrays, ignorePatterns format, and file existence before output
 
 ## Pre-Configured Rule Categories
-
-The skill ships with deep knowledge of these stacks and their common pitfalls:
 
 | Stack | What It Catches |
 |---|---|
@@ -33,47 +37,11 @@ The skill ships with deep knowledge of these stacks and their common pitfalls:
 | **React Frontend** | API contract mismatches, design system bypass, direct DOM manipulation |
 | **Monorepo** | Cascading configs with per-package strictness and disabled rules |
 
-These are starting points. The skill always analyzes your actual codebase and tailors rules to what it finds — it never copies scenarios verbatim.
-
-## Installation
-
-### Using npx (Recommended)
-
-```bash
-npx add-skill yigitkonur/skill-greptile-initializer
-```
-
-### Git Clone
-
-Clone this repo into your project's `.claude/skills/` directory:
-
-```bash
-# From your project root
-mkdir -p .claude/skills
-git clone https://github.com/yigitkonur/skill-greptile-init.git .claude/skills/greptile-config
-```
-
-### Manual Copy
-
-Download the `SKILL.md` and `references/` folder into `.claude/skills/greptile-config/`:
-
-```
-your-project/
-└── .claude/
-    └── skills/
-        └── greptile-config/
-            ├── SKILL.md
-            └── references/
-                ├── config-spec.md
-                ├── anti-patterns.md
-                └── scenarios.md
-```
-
-For more details on installing and customizing Claude Code skills, see [skill-snapshot-to-nextjs](https://github.com/yigitkonur/skill-snapshot-to-nextjs) which covers the full installation workflow.
+These are starting points. The skill always analyzes your actual codebase and tailors rules to what it finds.
 
 ## Usage
 
-Once installed, just ask Claude Code to set up Greptile for your repo:
+Once installed, just ask your agent to set up Greptile:
 
 ```
 Set up Greptile for this repo
@@ -91,11 +59,7 @@ I want Greptile to catch security issues in our MCP server — analyze the codeb
 We're a monorepo with packages/api and packages/web — set up Greptile with stricter rules on the API
 ```
 
-The skill triggers on mentions of Greptile, AI code review, PR review configuration, or anything about setting up automated code review rules.
-
 ## What Gets Generated
-
-Depending on your repo, the skill produces:
 
 ```
 .greptile/
@@ -108,14 +72,12 @@ For monorepos, child `.greptile/config.json` files are placed in subdirectories 
 
 ## Customization
 
-This skill comes pre-configured with rule categories I use most — TypeScript backends, Next.js apps, Tauri desktop apps, and MCP servers. You can (and should) customize it for your own stacks:
+The skill ships pre-configured for TypeScript backends, Next.js apps, Tauri desktop apps, and MCP servers. Customize for your own stacks:
 
 - **`references/scenarios.md`** — Add or modify example configurations for your frameworks
-- **`references/config-spec.md`** — Full parameter reference if you need to add new Greptile features
+- **`references/config-spec.md`** — Full parameter reference for Greptile features
 - **`references/anti-patterns.md`** — Common mistakes and troubleshooting patterns
 - **`SKILL.md`** — The main workflow and rule category table
-
-Clone the repo and edit these files to match your team's conventions.
 
 ## Skill Structure
 
@@ -129,8 +91,6 @@ Clone the repo and edit these files to match your team's conventions.
 └── evals/
     └── evals.json                    # 9 test cases for skill evaluation
 ```
-
-The skill uses progressive disclosure — `SKILL.md` is always in context (~184 lines), while reference files are loaded on demand when the skill needs detailed specs or example patterns.
 
 ## Key Design Decisions
 
