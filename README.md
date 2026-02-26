@@ -1,6 +1,8 @@
-# skill-greptile-initializer
+# skill-greptile-init
 
 A [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skill that generates production-ready [Greptile](https://greptile.com) AI code review configuration for any repository.
+
+> **Companion skill:** [skill-devin-review-init](https://github.com/yigitkonur/skill-devin-review-init) — generates `REVIEW.md` and `AGENTS.md` for Devin Review's AI code review system. Use both on the same repo for dual coverage.
 
 Point it at a repo, and it analyzes the structure, tech stack, documentation, and conventions — then produces tailored `.greptile/` configuration files with rules that catch real bugs, not noise.
 
@@ -48,7 +50,7 @@ Clone this repo into your project's `.claude/skills/` directory:
 ```bash
 # From your project root
 mkdir -p .claude/skills
-git clone https://github.com/yigitkonur/skill-greptile-initializer.git .claude/skills/greptile-config
+git clone https://github.com/yigitkonur/skill-greptile-init.git .claude/skills/greptile-config
 ```
 
 ### Manual Copy
