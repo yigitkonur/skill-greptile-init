@@ -1,7 +1,7 @@
 # skill-greptile-init
 
 > **other skills by [@yigitkonur](https://github.com/yigitkonur):**
-> [testing mcp servers](https://github.com/yigitkonur/skill-mcp-server-tester) · [extracting design dna from dashboards](https://github.com/yigitkonur/skill-design-soul-saas) · [converting saved webpages to next.js](https://github.com/yigitkonur/skill-snapshot-to-nextjs) · [generating devin review config](https://github.com/yigitkonur/skill-devin-review-init) · [mcp server for searching skills](https://github.com/yigitkonur/mcp-skills-as-context)
+> [testing mcp servers](https://github.com/yigitkonur/skill-mcp-server-tester) · [extracting design dna from dashboards](https://github.com/yigitkonur/skill-design-soul-saas) · [converting saved webpages to next.js](https://github.com/yigitkonur/skill-snapshot-to-nextjs) · [generating devin review config](https://github.com/yigitkonur/skill-devin-review-init) · [mcp server for searching skills](https://github.com/yigitkonur/mcp-skills-as-context) · [tauri observability & mcp bridge](https://github.com/yigitkonur/skill-tauri-mcp-install)
 
 a claude code skill that generates `.greptile/config.json` and `.greptile/rules.md` for [greptile](https://greptile.com) ai code review. analyzes your codebase and writes review rules tuned to your actual stack, patterns, and architecture.
 
