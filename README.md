@@ -1,104 +1,70 @@
 # skill-greptile-init
 
-Generate production-ready [Greptile](https://greptile.com) AI code review configuration for any repository.
+> **other skills by [@yigitkonur](https://github.com/yigitkonur):**
+> [testing mcp servers](https://github.com/yigitkonur/skill-mcp-server-tester) · [extracting design dna from dashboards](https://github.com/yigitkonur/skill-design-soul-saas) · [converting saved webpages to next.js](https://github.com/yigitkonur/skill-snapshot-to-nextjs) · [generating devin review config](https://github.com/yigitkonur/skill-devin-review-init) · [mcp server for searching skills](https://github.com/yigitkonur/mcp-skills-as-context)
+
+a claude code skill that generates `.greptile/config.json` and `.greptile/rules.md` for [greptile](https://greptile.com) ai code review. analyzes your codebase and writes review rules tuned to your actual stack, patterns, and architecture.
+
+## what it does
+
+greptile uses a `.greptile/` directory in your repo to configure its automated code reviews. this skill reads your code — not just the framework name — and generates:
+
+- **config.json** — strictness level, comment types, ignore patterns, branch inclusion, status checks, and per-rule definitions with id, scope, severity, and natural language descriptions
+- **rules.md** — extended review guidelines with good/bad code examples, pattern explanations, and nuanced rules that don't fit in json
+
+## what goes in config.json
+
+each rule gets:
+
+- **id** — a kebab-case identifier like `mcp-tool-input-validation`
+- **rule** — natural language description of what to check and why
+- **scope** — file glob patterns where the rule applies (e.g., `src/mcp/tools/**/*.ts`)
+- **severity** — high, medium, or low
+
+plus global settings: strictness (1-3), comment types (logic, syntax, style), ignore patterns, branch filters, summary/issues section configuration.
+
+## what goes in rules.md
+
+the extended rules that need code examples and longer explanations. each rule has a good and bad code block showing the pattern in your actual stack. this is where nuance lives — things like "never hold a mutex guard across an await point" with concrete before/after examples.
+
+## scenario coverage
+
+the skill includes reference scenarios for:
+
+- typescript backend api (express/fastify + prisma)
+- next.js marketing website (app router + cms)
+- next.js dashboard / admin panel
+- python django rest api
+- tauri desktop app (rust + typescript)
+- mcp server (typescript)
+- production mcp server (middleware pipelines, token budgets)
+- python agent using mcp-use
+- monorepo with scoped configs
+
+these are references the agent uses to understand patterns, not templates that get copy-pasted. everything adapts to what it actually finds in your code.
+
+## usage
+
+```
+set up greptile for this repo
+```
+
+```
+generate greptile review config for this project
+```
+
+```
+create .greptile config with rules for our codebase
+```
+
+## install
 
 ```bash
 npx skills add yigitkonur/skill-greptile-init
 ```
 
-> Works with Claude Code, Cursor, Codex, Copilot, Windsurf, and [30+ other agents](https://skills.sh).
+> works with claude code, cursor, codex, copilot, windsurf, and [30+ other agents](https://skills.sh).
 
-> **Companion skill:** [skill-devin-review-init](https://github.com/yigitkonur/skill-devin-review-init) — generates `REVIEW.md` for Devin Review. Use both on the same repo for dual coverage.
+## license
 
----
-
-Point it at a repo, and it analyzes the structure, tech stack, documentation, and conventions — then produces tailored `.greptile/` configuration files with rules that catch real bugs, not noise.
-
-## What It Does
-
-1. **Explores your repo** — maps the directory structure, identifies frameworks, finds existing docs and schemas
-2. **Decides the config strategy** — single config vs. cascading monorepo overrides, strictness levels per directory
-3. **Engineers semantic rules** — rules that leverage Greptile's LLM understanding (not things ESLint can catch)
-4. **Maps context files** — points the reviewer to architecture docs, API specs, database schemas
-5. **Validates everything** — checks all JSON syntax, scope arrays, ignorePatterns format, and file existence before output
-
-## Pre-Configured Rule Categories
-
-| Stack | What It Catches |
-|---|---|
-| **TypeScript Backend** | Raw SQL, missing error handling, business logic in controllers, unstructured logging |
-| **Next.js Website** | Missing metadata/SEO, raw `<img>` tags, unnecessary client components, waterfall fetches, no ISR strategy |
-| **Next.js Dashboard** | Missing auth on routes, unvalidated server actions, RBAC bypass, env var exposure in client components |
-| **Tauri Desktop App** | Panics in IPC commands, Mutex locks across await, shell injection, path traversal, sensitive data logging |
-| **MCP Server (TypeScript)** | Schema/registry mismatch, missing error boundaries, secrets in responses, no AbortSignal propagation |
-| **mcp-use Framework (Python)** | Leaked connections, missing timeouts, hardcoded secrets, tool call error swallowing |
-| **Python Django** | N+1 queries, missing permission_classes, raw SQL |
-| **Go Microservice** | Missing error wrapping, no context propagation, goroutine leaks |
-| **React Frontend** | API contract mismatches, design system bypass, direct DOM manipulation |
-| **Monorepo** | Cascading configs with per-package strictness and disabled rules |
-
-These are starting points. The skill always analyzes your actual codebase and tailors rules to what it finds.
-
-## Usage
-
-Once installed, just ask your agent to set up Greptile:
-
-```
-Set up Greptile for this repo
-```
-
-```
-Configure AI code review for our Next.js dashboard
-```
-
-```
-I want Greptile to catch security issues in our MCP server — analyze the codebase and generate the config
-```
-
-```
-We're a monorepo with packages/api and packages/web — set up Greptile with stricter rules on the API
-```
-
-## What Gets Generated
-
-```
-.greptile/
-├── config.json    # Rules, strictness, filters, output format
-├── rules.md       # Prose rules with good/bad code examples (when needed)
-└── files.json     # Context files for the reviewer (when docs exist)
-```
-
-For monorepos, child `.greptile/config.json` files are placed in subdirectories that need different settings.
-
-## Customization
-
-The skill ships pre-configured for TypeScript backends, Next.js apps, Tauri desktop apps, and MCP servers. Customize for your own stacks:
-
-- **`references/scenarios.md`** — Add or modify example configurations for your frameworks
-- **`references/config-spec.md`** — Full parameter reference for Greptile features
-- **`references/anti-patterns.md`** — Common mistakes and troubleshooting patterns
-- **`SKILL.md`** — The main workflow and rule category table
-
-## Skill Structure
-
-```
-.claude/skills/greptile-config/
-├── SKILL.md                          # Main skill (184 lines, always loaded)
-├── references/
-│   ├── config-spec.md                # Complete parameter reference (280 lines)
-│   ├── anti-patterns.md              # Validation + troubleshooting (148 lines)
-│   └── scenarios.md                  # 11 example configs (920 lines)
-└── evals/
-    └── evals.json                    # 9 test cases for skill evaluation
-```
-
-## Key Design Decisions
-
-- **Semantic over syntactic**: Every rule is designed for Greptile's LLM reasoning, not pattern matching. If ESLint/Prettier can catch it, the skill won't create a rule for it.
-- **Scoped by default**: Every rule gets a `scope` array targeting only the directories where it matters.
-- **Repository-first**: The skill always analyzes the actual repo structure before generating config. No generic boilerplate.
-- **Validated output**: All JSON is checked for common Greptile anti-patterns (array scopes, newline-separated ignorePatterns, valid severity values, existing file paths) before output.
-
-## License
-
-MIT
+mit
